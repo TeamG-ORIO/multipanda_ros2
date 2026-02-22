@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'franka_simple_publishers = franka_simple_publishers.franka_simple_publishers:main',
         ],
     },
 )
