@@ -53,7 +53,9 @@ WS_SRC="/home/developer/multipanda_ws/src"
 WITH_GPU_CONFIG=()
 if check_nvidia_gpu && check_gpu_support; then
     # Adding 'display' capability is key for OpenGL performance (MuJoCo/RViz)
-    WITH_GPU_CONFIG+=(--gpus 'all,"capabilities=compute,utility,graphics,display"')
+    WITH_GPU_CONFIG+=(--gpus 'all,"capabilities=compute,utility,graphics,display"'
+                      --env "__NV_PRIME_RENDER_OFFLOAD=1"
+                      --env "__GLX_VENDOR_LIBRARY_NAME=nvidia")
     echo "GPU support detected."
 else
     echo "No GPU support. Using CPU rendering."
