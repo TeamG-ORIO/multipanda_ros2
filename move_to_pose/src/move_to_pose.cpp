@@ -1,25 +1,63 @@
 #include <cmath>
 #include <memory>
 #include <vector>
+#include <string>
+#include <thread>
+#include <chrono>
 
 #include <rclcpp/rclcpp.hpp>
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
-#include <moveit_msgs/msg/collision_object.hpp>
-#include <shape_msgs/msg/solid_primitive.hpp>
 #include <geometry_msgs/msg/pose.hpp>
+#include <moveit_msgs/msg/collision_object.hpp>
+#include <moveit_msgs/msg/planning_scene.hpp>
+#include <moveit_msgs/msg/allowed_collision_entry.hpp>
+#include <shape_msgs/msg/solid_primitive.hpp>
+
+// Build a box collision object for MoveIt's planning scene.
+// pos_xyz: center position (metres), half_extents: box half-sizes (metres).
+moveit_msgs::msg::CollisionObject make_box(
+  const std::string & id,
+  const std::string & frame_id,
+  std::array<double, 3> pos_xyz,
+  std::array<double, 3> half_extents)
+{
+  moveit_msgs::msg::CollisionObject obj;
+  obj.id = id;
+  obj.header.frame_id = frame_id;
+  obj.operation = moveit_msgs::msg::CollisionObject::ADD;
+
+  shape_msgs::msg::SolidPrimitive primitive;
+  primitive.type = shape_msgs::msg::SolidPrimitive::BOX;
+  // MoveIt BOX dimensions are full extents, MuJoCo size is half-extents
+  primitive.dimensions = {
+    2.0 * half_extents[0],
+    2.0 * half_extents[1],
+    2.0 * half_extents[2]
+  };
+
+  geometry_msgs::msg::Pose pose;
+  pose.position.x = pos_xyz[0];
+  pose.position.y = pos_xyz[1];
+  pose.position.z = pos_xyz[2];
+  pose.orientation.w = 1.0;
+
+  obj.primitives.push_back(primitive);
+  obj.primitive_poses.push_back(pose);
+  return obj;
+}
 
 int main(int argc, char * argv[])
 {
   // Initialize ROS and create the Node
   rclcpp::init(argc, argv);
   auto const node = std::make_shared<rclcpp::Node>(
-    "hello_moveit",
+    "move_to_pose",
     rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)
   );
 
   // Create a ROS logger
-  auto const logger = rclcpp::get_logger("hello_moveit");
+  auto const logger = rclcpp::get_logger("move_to_pose");
 
   auto declare_if_not = [&](const std::string & name, double default_val) {
     if (!node->has_parameter(name)) node->declare_parameter(name, default_val);
@@ -27,11 +65,13 @@ int main(int argc, char * argv[])
   declare_if_not("x",     0.3);
   declare_if_not("y",     0.4);
   declare_if_not("z",     0.4);
-  // Euler angles in degrees (ZYX / yaw-pitch-roll convention)
-  // Default: 180° around X (end-effector pointing down) = roll:180, pitch:0, yaw:0
   declare_if_not("roll",  180.0);
   declare_if_not("pitch", 0.0);
   declare_if_not("yaw",   0.0);
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node);
+  auto spinner = std::thread([&executor]() { executor.spin(); });
 
   // Create the MoveIt MoveGroup Interface
   using moveit::planning_interface::MoveGroupInterface;
@@ -61,48 +101,62 @@ int main(int argc, char * argv[])
     return msg;
   }();
 
-  // Build the MoveIt planning scene from scene.xml objects
-  moveit::planning_interface::PlanningSceneInterface psi;
-
-  auto make_box = [](const std::string & id,
-                     double px, double py, double pz,
-                     double sx, double sy, double sz) {
-    moveit_msgs::msg::CollisionObject obj;
-    obj.id = id;
-    obj.header.frame_id = "panda_link0";
-    obj.operation = moveit_msgs::msg::CollisionObject::ADD;
-
-    shape_msgs::msg::SolidPrimitive prim;
-    prim.type = shape_msgs::msg::SolidPrimitive::BOX;
-    prim.dimensions = {sx * 2.0, sy * 2.0, sz * 2.0};  // MuJoCo size = half-extent
-
-    geometry_msgs::msg::Pose pose;
-    pose.position.x = px;
-    pose.position.y = py;
-    pose.position.z = pz;
-    pose.orientation.w = 1.0;
-
-    obj.primitives.push_back(prim);
-    obj.primitive_poses.push_back(pose);
-    return obj;
-  };
-
-  std::vector<moveit_msgs::msg::CollisionObject> scene_objects;
-
-  // Table: body pos=(0,0,-0.584), geom half-sizes=(0.343,0.546,0.584)
-  scene_objects.push_back(make_box("table",       0.0,    0.0,   -0.584,  0.343, 0.546, 0.584));
-
-  // Frame posts and crossbar
-  scene_objects.push_back(make_box("left_post",   0.0,  -0.597,  0.5715, 0.02,  0.02,  0.5715));
-  scene_objects.push_back(make_box("right_post",  0.0,   0.597,  0.5715, 0.02,  0.02,  0.5715));
-  scene_objects.push_back(make_box("crossbar",    0.0,   0.0,    1.143,  0.02,  0.597, 0.02));
-
-  // Graspable object (obj_box_01): body pos=(-0.3,0.3,0.03), half-sizes=(0.03,0.03,0.03)
-  scene_objects.push_back(make_box("obj_box_01", -0.3,   0.3,    0.03,   0.03,  0.03,  0.03));
-
-  psi.applyCollisionObjects(scene_objects);
-
   move_group_interface.setPoseTarget(target_pose);
+
+  const std::string frame = move_group_interface.getPlanningFrame();
+
+  std::vector<moveit_msgs::msg::CollisionObject> collision_objects;
+
+  // --- scene.xml: table (body pos="0 0 -0.584", geom size="0.343 0.546 0.584") ---
+  collision_objects.push_back(make_box(
+    "table", frame,
+    {0.0, 0.0, -1.0},
+    {0.343, 0.546, 0.584}));
+
+  // --- scene.xml: frame left_post (pos="0 -0.597 0.5715", size="0.02 0.02 0.5715") ---
+  collision_objects.push_back(make_box(
+    "left_post", frame,
+    {0.0, -0.597, 0.5715},
+    {0.02, 0.02, 0.5715}));
+
+  // --- scene.xml: frame right_post (pos="0 0.597 0.5715", size="0.02 0.02 0.5715") ---
+  // collision_objects.push_back(make_box(
+  //   "right_post", frame,
+  //   {0.0, 0.597, 0.5715},
+  //   {0.02, 0.02, 0.5715}));
+
+  // --- scene.xml: frame crossbar (pos="0 0 1.143", size="0.02 0.597 0.02") ---
+  // collision_objects.push_back(make_box(
+  //   "crossbar", frame,
+  //   {0.0, 0.0, 1.143},
+  //   {0.02, 0.597, 0.02}));
+
+  // --- box.xml: obj_box_01 (pos="-0.3 0.3 0.03", size="0.03 0.03 0.03") ---
+  // collision_objects.push_back(make_box(
+  //   "obj_box_01", frame,
+  //   {-0.3, 0.3, 0.03},
+  //   {0.03, 0.03, 0.03}));
+
+  moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+  planning_scene_interface.applyCollisionObjects(collision_objects);
+  RCLCPP_INFO(logger, "Planning scene populated with %zu collision objects.", collision_objects.size());
+
+  // Give move_group time to process the scene update before planning.
+  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+  // Verify the objects actually landed in the scene before planning.
+  {
+    auto known = planning_scene_interface.getKnownObjectNames();
+    RCLCPP_INFO(logger, "Objects confirmed in scene: %zu", known.size());
+    for (const auto & name : known) {
+      RCLCPP_INFO(logger, "  - %s", name.c_str());
+    }
+    if (known.size() != collision_objects.size()) {
+      RCLCPP_WARN(logger, "Scene object count mismatch — waiting another 500 ms");
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+  }
+
 
   // Create a plan to that target pose
   auto const [success, plan] = [&move_group_interface]{
@@ -120,5 +174,6 @@ int main(int argc, char * argv[])
 
   // Shutdown ROS
   rclcpp::shutdown();
+  spinner.join();
   return 0;
 }

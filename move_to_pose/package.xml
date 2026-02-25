@@ -10,6 +10,9 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>moveit_ros_planning_interface</depend>
+  <depend>moveit_msgs</depend>
+  <depend>shape_msgs</depend>
+  <depend>geometry_msgs</depend>
   <depend>rclcpp</depend>
   <exec_depend>franka_description</exec_depend>
   <exec_depend>franka_moveit_config</exec_depend>

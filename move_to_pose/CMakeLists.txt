@@ -8,6 +8,9 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(moveit_msgs REQUIRED)
+find_package(shape_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 
 add_executable(move_to_pose src/move_to_pose.cpp)
@@ -18,6 +21,9 @@ target_compile_features(move_to_pose PUBLIC c_std_99 cxx_std_17)  # Require C99 
 ament_target_dependencies(
   move_to_pose
   "moveit_ros_planning_interface"
+  "moveit_msgs"
+  "shape_msgs"
+  "geometry_msgs"
   "rclcpp"
 )
 
