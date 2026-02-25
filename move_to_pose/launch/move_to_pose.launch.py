@@ -21,18 +21,12 @@ def generate_launch_description():
     arm_id = LaunchConfiguration('arm_id', default='panda')
     load_gripper = True
 
-    x   = LaunchConfiguration('x',   default='0.3')
-    y   = LaunchConfiguration('y',   default='0.4')
-    z   = LaunchConfiguration('z',   default='0.4')
-    r00 = LaunchConfiguration('r00', default='1.0')
-    r01 = LaunchConfiguration('r01', default='0.0')
-    r02 = LaunchConfiguration('r02', default='0.0')
-    r10 = LaunchConfiguration('r10', default='0.0')
-    r11 = LaunchConfiguration('r11', default='-1.0')
-    r12 = LaunchConfiguration('r12', default='0.0')
-    r20 = LaunchConfiguration('r20', default='0.0')
-    r21 = LaunchConfiguration('r21', default='0.0')
-    r22 = LaunchConfiguration('r22', default='-1.0')
+    x     = LaunchConfiguration('x',     default='0.3')
+    y     = LaunchConfiguration('y',     default='0.4')
+    z     = LaunchConfiguration('z',     default='0.4')
+    roll  = LaunchConfiguration('roll',  default='180.0')
+    pitch = LaunchConfiguration('pitch', default='0.0')
+    yaw   = LaunchConfiguration('yaw',   default='0.0')
 
     franka_xacro_file = os.path.join(
         get_package_share_directory('franka_description'),
@@ -69,26 +63,18 @@ def generate_launch_description():
             kinematics_yaml,
             {
                 'x': x, 'y': y, 'z': z,
-                'r00': r00, 'r01': r01, 'r02': r02,
-                'r10': r10, 'r11': r11, 'r12': r12,
-                'r20': r20, 'r21': r21, 'r22': r22,
+                'roll': roll, 'pitch': pitch, 'yaw': yaw,
             },
         ],
     )
 
     return LaunchDescription([
         DeclareLaunchArgument('arm_id', default_value='panda'),
-        DeclareLaunchArgument('x',   default_value='0.3',  description='Target position x (m)'),
-        DeclareLaunchArgument('y',   default_value='0.4',  description='Target position y (m)'),
-        DeclareLaunchArgument('z',   default_value='0.4',  description='Target position z (m)'),
-        DeclareLaunchArgument('r00', default_value='1.0',  description='Rotation matrix [0,0]'),
-        DeclareLaunchArgument('r01', default_value='0.0',  description='Rotation matrix [0,1]'),
-        DeclareLaunchArgument('r02', default_value='0.0',  description='Rotation matrix [0,2]'),
-        DeclareLaunchArgument('r10', default_value='0.0',  description='Rotation matrix [1,0]'),
-        DeclareLaunchArgument('r11', default_value='-1.0', description='Rotation matrix [1,1]'),
-        DeclareLaunchArgument('r12', default_value='0.0',  description='Rotation matrix [1,2]'),
-        DeclareLaunchArgument('r20', default_value='0.0',  description='Rotation matrix [2,0]'),
-        DeclareLaunchArgument('r21', default_value='0.0',  description='Rotation matrix [2,1]'),
-        DeclareLaunchArgument('r22', default_value='-1.0', description='Rotation matrix [2,2]'),
+        DeclareLaunchArgument('x',     default_value='0.3',   description='Target position x (m)'),
+        DeclareLaunchArgument('y',     default_value='0.4',   description='Target position y (m)'),
+        DeclareLaunchArgument('z',     default_value='0.4',   description='Target position z (m)'),
+        DeclareLaunchArgument('roll',  default_value='180.0', description='Roll  angle in degrees (rotation about X)'),
+        DeclareLaunchArgument('pitch', default_value='0.0',   description='Pitch angle in degrees (rotation about Y)'),
+        DeclareLaunchArgument('yaw',   default_value='0.0',   description='Yaw   angle in degrees (rotation about Z)'),
         move_to_pose_node,
     ])
