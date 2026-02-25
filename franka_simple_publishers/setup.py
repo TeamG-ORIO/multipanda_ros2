@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'franka_simple_publishers = franka_simple_publishers.franka_simple_publishers:main',
+            'move_joints = franka_simple_publishers.move_joints:main',
+            'move_to_pose = franka_simple_publishers.move_to_pose:main',
         ],
     },
 )
