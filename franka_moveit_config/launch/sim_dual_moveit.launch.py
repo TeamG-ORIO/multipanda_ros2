@@ -183,6 +183,7 @@ def generate_launch_description():
             trajectory_execution,
             moveit_controllers,
             planning_scene_monitor_parameters,
+            {'use_sim_time': True},
         ],
     )
 
@@ -201,6 +202,7 @@ def generate_launch_description():
             robot_description_semantic,
             ompl_planning_pipeline_config,
             kinematics_yaml,
+            {'use_sim_time': True},
         ],
     )
 
@@ -210,7 +212,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         # name='robot_state_publisher',
         output='both',
-        parameters=[robot_description],
+        parameters=[robot_description, {'use_sim_time': True}],
     )
 
     ros2_controllers_path = os.path.join(
@@ -269,7 +271,8 @@ def generate_launch_description():
             namespace= '',
             parameters=[
                 {'source_list': jsp_source_list,
-                 'rate': 30}],
+                 'rate': 30,
+                 'use_sim_time': True}],
     )
 
     # Launch arguments    

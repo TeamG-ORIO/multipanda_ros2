@@ -27,7 +27,21 @@ ament_target_dependencies(
   "rclcpp"
 )
 
-install(TARGETS move_to_pose
+add_executable(dual_move_to_pose src/dual_move_to_pose.cpp)
+target_include_directories(dual_move_to_pose PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(dual_move_to_pose PUBLIC c_std_99 cxx_std_17)
+ament_target_dependencies(
+  dual_move_to_pose
+  "moveit_ros_planning_interface"
+  "moveit_msgs"
+  "shape_msgs"
+  "geometry_msgs"
+  "rclcpp"
+)
+
+install(TARGETS move_to_pose dual_move_to_pose
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch

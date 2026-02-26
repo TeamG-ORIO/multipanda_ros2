@@ -176,3 +176,38 @@ panda_arm_hand:
     - SPARStwokConfigDefault
     - TrajOptDefault
 
+mj_left_arm:
+  planner_configs:
+    - RRTConnectkConfigDefault
+    - RRTkConfigDefault
+    - RRTstarkConfigDefault
+    - PRMkConfigDefault
+
+mj_right_arm:
+  planner_configs:
+    - RRTConnectkConfigDefault
+    - RRTkConfigDefault
+    - RRTstarkConfigDefault
+    - PRMkConfigDefault
+
+mj_left_manipulator:
+  planner_configs:
+    - RRTConnectkConfigDefault
+    - RRTkConfigDefault
+    - RRTstarkConfigDefault
+    - PRMkConfigDefault
+
+mj_right_manipulator:
+  planner_configs:
+    - RRTConnectkConfigDefault
+    - RRTkConfigDefault
+    - RRTstarkConfigDefault
+    - PRMkConfigDefault
+
+dual_panda:
+  planner_configs:
+    - RRTConnectkConfigDefault
+    - RRTkConfigDefault
+    - RRTstarkConfigDefault
+    - PRMkConfigDefault
+
