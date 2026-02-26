@@ -35,7 +35,7 @@
       
       <geom name="crossbar" type="box" size="0.02 0.597 0.02" pos="-0.343 0 1.143" material="frame_metal"/>
     </body>
-    <body name="camera" pos="0.5 0 1.2" axisangle="1 0 0 90">
+    <body name="camera" pos="-0.2 0 1.143" euler="0 90 0">
       <camera 
           name="camera" 
           mode="fixed"

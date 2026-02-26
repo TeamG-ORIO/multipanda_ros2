@@ -2,7 +2,11 @@ mujoco_server:
   ros__parameters:
     cam_config:
       camera:
-        stream_type: 3
+        type: "rgbd"           # Explicitly set type to rgbd
+        stream_type: 3         # (1=RGB, 2=Depth, 3=Both)
+        use_rgb: true
+        use_depth: true        # Use 'use_depth' instead of just 'depth'
+        publish_frequency: 15.0
     
     MujocoPlugins:
       names:
@@ -19,14 +23,6 @@ mujoco_server:
           robot_description: "robot_description"
       mujoco_ros2_sensors:   
         type: mujoco_ros::sensors::MujocoRos2SensorsPlugin # Updated namespace
-        cameras:
-          camera:
-            stream_type: 3
-            frame_id: camera
-            width: 640
-            height: 480
-            rgb: true
-            depth: true
 
 controller_manager:
     ros__parameters:
