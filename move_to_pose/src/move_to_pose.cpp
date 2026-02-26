@@ -108,10 +108,10 @@ int main(int argc, char * argv[])
   std::vector<moveit_msgs::msg::CollisionObject> collision_objects;
 
   // --- scene.xml: table (body pos="0 0 -0.584", geom size="0.343 0.546 0.584") ---
-  collision_objects.push_back(make_box(
-    "table", frame,
-    {0.0, 0.0, -1.0},
-    {0.343, 0.546, 0.584}));
+  // collision_objects.push_back(make_box(
+  //   "table", frame,
+  //   {0.0, 0.0, -0.6},
+  //   {0.343, 0.546, 0.584}));
 
   // --- scene.xml: frame left_post (pos="0 -0.597 0.5715", size="0.02 0.02 0.5715") ---
   collision_objects.push_back(make_box(
@@ -119,23 +119,23 @@ int main(int argc, char * argv[])
     {0.0, -0.597, 0.5715},
     {0.02, 0.02, 0.5715}));
 
-  // --- scene.xml: frame right_post (pos="0 0.597 0.5715", size="0.02 0.02 0.5715") ---
-  // collision_objects.push_back(make_box(
-  //   "right_post", frame,
-  //   {0.0, 0.597, 0.5715},
-  //   {0.02, 0.02, 0.5715}));
+  --- scene.xml: frame right_post (pos="0 0.597 0.5715", size="0.02 0.02 0.5715") ---
+  collision_objects.push_back(make_box(
+    "right_post", frame,
+    {0.0, 0.597, 0.5715},
+    {0.02, 0.02, 0.5715}));
 
-  // --- scene.xml: frame crossbar (pos="0 0 1.143", size="0.02 0.597 0.02") ---
-  // collision_objects.push_back(make_box(
-  //   "crossbar", frame,
-  //   {0.0, 0.0, 1.143},
-  //   {0.02, 0.597, 0.02}));
+  --- scene.xml: frame crossbar (pos="0 0 1.143", size="0.02 0.597 0.02") ---
+  collision_objects.push_back(make_box(
+    "crossbar", frame,
+    {0.0, 0.0, 1.143},
+    {0.02, 0.597, 0.02}));
 
-  // --- box.xml: obj_box_01 (pos="-0.3 0.3 0.03", size="0.03 0.03 0.03") ---
-  // collision_objects.push_back(make_box(
-  //   "obj_box_01", frame,
-  //   {-0.3, 0.3, 0.03},
-  //   {0.03, 0.03, 0.03}));
+  --- box.xml: obj_box_01 (pos="-0.3 0.3 0.03", size="0.03 0.03 0.03") ---
+  collision_objects.push_back(make_box(
+    "obj_box_01", frame,
+    {-0.3, 0.3, 0.03},
+    {0.03, 0.03, 0.03}));
 
   moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
   planning_scene_interface.applyCollisionObjects(collision_objects);
