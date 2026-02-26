@@ -16,7 +16,7 @@
           <mesh filename="package://${description_pkg}/meshes/visual/link0.dae"/>
         </geometry>
       </visual>
-      <collision>
+      <!-- <collision>
         <origin xyz="-0.075 0 0.06" rpy="0 ${pi/2} 0"/>
         <geometry>
           <cylinder radius="${0.06+safety_distance}" length="0.03" />
@@ -33,6 +33,13 @@
         <geometry>
           <sphere radius="${0.06+safety_distance}" />
         </geometry>
+      </collision> -->
+      <collision>
+        <origin xyz="-0.075 0 ${0.06 + safety_distance/2}" rpy="0 0 0"/>
+        <geometry>
+          <!-- height is base_height + safety_distance (top only, not bottom) -->
+          <box size="${0.15 + 2*safety_distance} ${0.12 + 2*safety_distance} ${0.12 + safety_distance}" />
+        </geometry>
       </collision>
     </link>
     <link name="${arm_id}_link1">
@@ -47,12 +54,12 @@
           <cylinder radius="${0.06+safety_distance}" length="0.2830" />
         </geometry>
       </collision>
-      <collision>
+      <!-- <collision>
         <origin xyz="0 0 -0.333" rpy="0 0 0"/>
         <geometry>
           <sphere radius="${0.06+safety_distance}" />
         </geometry>
-      </collision>
+      </collision> -->
       <collision>
         <origin xyz="0 0 -0.05" rpy="0 0 0"/>
         <geometry>
