@@ -85,9 +85,9 @@ def generate_launch_description():
                         # and it's not worth doing just for a single boolean.
     
     if(load_gripper): # mujoco scene file must be manually adjusted since there's no way to pass parameters
-        scene_file = 'dual_scene.xml'
+        scene_file = 'orio_dual_scene.xml'
     else:
-        scene_file = 'dual_scene_ng.xml'
+        scene_file = 'orio_dual_scene_ng.xml'
 
     # planning_context
     franka_xacro_file = os.path.join(get_package_share_directory('franka_description'), 'robots', 'sim',
