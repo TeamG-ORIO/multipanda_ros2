@@ -1,0 +1,8 @@
+# High-level arm task primitive
+# arm_id: "arm1" or "arm2"
+# command: e.g. "go_home", "pick_item_from_pickup", "place_item_in_label_station", etc.
+string arm_id
+string command
+---
+bool success
+string error_message

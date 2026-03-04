@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>orio_perception_interface</name>
+  <version>0.1.0</version>
+  <description>
+    Perception abstraction layer.  Provides swappable providers for grasp and
+    label pose estimation.  Default provider reads poses from YAML; a real
+    vision provider can be selected via launch argument.
+  </description>
+  <maintainer email="dev@todo.todo">developer</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>orio_dual_arm_msgs</depend>
+  <depend>geometry_msgs</depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

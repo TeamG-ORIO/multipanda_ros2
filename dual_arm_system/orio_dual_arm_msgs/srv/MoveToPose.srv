@@ -1,0 +1,7 @@
+# Low-level motion primitive: move a single arm to a named or explicit pose
+string arm_id
+string named_pose      # optional: pre-defined pose name (e.g. "pre_grasp", "grasp", "lift")
+geometry_msgs/Pose target_pose   # used when named_pose is empty
+---
+bool success
+string error_message

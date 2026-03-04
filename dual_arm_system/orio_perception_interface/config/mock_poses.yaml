@@ -1,0 +1,13 @@
+grasp_pose_server:
+  ros__parameters:
+    mock_grasp_pose.position:         [0.45,  0.0,  0.20]
+    mock_grasp_pose.orientation:      [180.0, 0.0,  0.0]
+    mock_pre_grasp_pose.position:     [0.45,  0.0,  0.35]
+    mock_pre_grasp_pose.orientation:  [180.0, 0.0,  0.0]
+
+label_pose_server:
+  ros__parameters:
+    mock_label_pose.position:         [0.30, -0.30, 0.20]
+    mock_label_pose.orientation:      [180.0, 0.0,  0.0]
+    mock_pre_label_pose.position:     [0.30, -0.30, 0.35]
+    mock_pre_label_pose.orientation:  [180.0, 0.0,  0.0]

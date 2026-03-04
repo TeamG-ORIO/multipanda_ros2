@@ -1,0 +1,10 @@
+# GUI -> Task Supervisor commands
+# command: "home", "start_sequence", "stop", "reset_error"
+# sequence: optional sequence name for single-arm or targeted execution
+# arm_id: "arm1", "arm2", or "" for complete system
+string command
+string sequence
+string arm_id
+---
+bool success
+string error_message

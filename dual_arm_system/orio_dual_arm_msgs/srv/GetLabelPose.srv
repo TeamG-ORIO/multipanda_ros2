@@ -1,0 +1,3 @@
+# Perception interface: request a label placement pose
+---
+orio_dual_arm_msgs/LabelPose result

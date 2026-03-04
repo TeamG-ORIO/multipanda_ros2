@@ -1,0 +1,6 @@
+# Low-level gripper primitive
+string arm_id
+bool activate   # true = close/grasp, false = open/release
+---
+bool success
+string error_message

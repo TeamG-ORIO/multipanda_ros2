@@ -1,0 +1,19 @@
+<library path="orio_rqt_dual_arm_gui">
+  <class
+    name="DualArmGui"
+    type="orio_rqt_dual_arm_gui.dual_arm_gui.DualArmGui"
+    base_class_type="rqt_gui_py::Plugin">
+    <description>
+      Dual-arm pick-label-place control panel.
+      Sends commands to the task supervisor and displays system status.
+    </description>
+    <qtgui>
+      <group>
+        <label>Robot</label>
+      </group>
+      <label>Dual Arm GUI</label>
+      <icon type="theme">system-run</icon>
+      <statustip>Control panel for the dual-arm pick-label-place system.</statustip>
+    </qtgui>
+  </class>
+</library>

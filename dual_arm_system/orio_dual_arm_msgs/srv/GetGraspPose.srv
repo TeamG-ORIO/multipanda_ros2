@@ -1,0 +1,3 @@
+# Perception interface: request a grasp pose for the item in the pickup zone
+---
+orio_dual_arm_msgs/GraspPose result

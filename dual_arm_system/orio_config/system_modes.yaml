@@ -1,0 +1,8 @@
+task_supervisor:
+  ros__parameters:
+    # "discrete"   – run one complete cycle then return HOME
+    # "continuous" – loop the sequence until a STOP command is received
+    execution_mode: discrete
+
+    # Publishing rate for the /supervisor/status topic (Hz)
+    status_publish_hz: 2.0

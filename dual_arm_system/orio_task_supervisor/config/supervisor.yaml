@@ -1,0 +1,7 @@
+task_supervisor:
+  ros__parameters:
+    max_grasp_attempts:      3
+    max_label_attempts:      3
+    max_perception_attempts: 3
+    execution_mode:          discrete
+    status_publish_hz:       2.0
