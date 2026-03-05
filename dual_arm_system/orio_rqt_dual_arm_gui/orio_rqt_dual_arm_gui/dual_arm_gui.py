@@ -1,7 +1,6 @@
 """rqt plugin: Dual Arm GUI.
 
 All robot interactions are routed exclusively through the task supervisor.
-This widget never calls the manipulation interface directly.
 
 Layout:
   ┌──────────────────────────────────────────────────┐
@@ -50,6 +49,8 @@ _ARM2_SEQUENCES = [
     'Place Label',
     'Activate Gripper',
     'Deactivate Gripper',
+    'Pre-Grasp Label',
+    'Pre-Place Label',
 ]
 
 _SEQUENCE_TO_CMD = {
@@ -62,6 +63,8 @@ _SEQUENCE_TO_CMD = {
     'Pre-Place':           'pre_place',
     'Pick Label':          'pick_label',
     'Place Label':         'place_label',
+    'Pre-Grasp Label':     'pre_grasp_label',
+    'Pre-Place Label':     'pre_place_label',
 }
 
 

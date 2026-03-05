@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="orio_environment">
+
+  <!--
+    Static environment geometry matching orio_dual_scene.xml.
+    MuJoCo uses half-extents for box sizes and nested body transforms.
+    URDF uses full extents. All positions below are in the world frame
+    (base_link origin), derived by accumulating the nested body offsets.
+
+    table_1  body at  0.343  0     0.45
+    frame_1  body at -0.323  0     0.45  relative to table_1
+    table_2  body at -0.546  0     0.45
+    frame_2  body at -0.526  0     0.45  relative to table_2
+  -->
+
+  <xacro:macro name="orio_environment" params="parent">
+
+    <!-- ============================================================ -->
+    <!-- TABLE 1 (right-hand side, in front of left arm)              -->
+    <!-- mujoco body pos=0.343_0_0.45 size=0.343_0.546_0.45          -->
+    <!-- ============================================================ -->
+    <link name="table_top_1">
+      <visual>
+        <geometry>
+          <box size="0.686 1.092 0.89"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="table_wood">
+          <color rgba="0.5 0.4 0.3 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.686 1.092 0.89"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="table_top_1_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="table_top_1"/>
+      <origin xyz="0.343 0 0.45" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Frame 1 world origin = table_1.pos + frame_1.pos = (0.020, 0, 0.90) -->
+
+    <link name="post_1_l">
+      <visual>
+        <geometry>
+          <box size="0.04 0.04 1.00"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="frame_metal">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.04 0.04 1.00"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="post_1_l_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="post_1_l"/>
+      <!-- frame origin + geom pos (0, -0.526, 0.50) -->
+      <origin xyz="0.020 -0.526 1.40" rpy="0 0 0"/>
+    </joint>
+
+    <link name="post_1_r">
+      <visual>
+        <geometry>
+          <box size="0.04 0.04 1.00"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="frame_metal">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.04 0.04 1.00"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="post_1_r_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="post_1_r"/>
+      <!-- frame origin + geom pos (0, 0.526, 0.50) -->
+      <origin xyz="0.020 0.526 1.40" rpy="0 0 0"/>
+    </joint>
+
+    <link name="crossbar_1">
+      <visual>
+        <geometry>
+          <box size="0.04 1.092 0.04"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="frame_metal">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.04 1.092 0.04"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="crossbar_1_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="crossbar_1"/>
+      <!-- frame origin + geom pos (0, 0, 1.00) -->
+      <origin xyz="0.020 0 1.90" rpy="0 0 0"/>
+    </joint>
+
+    <!-- ============================================================ -->
+    <!-- TABLE 2 (left-hand side, in front of right arm)              -->
+    <!-- mujoco body pos=-0.546_0_0.45 size=0.546_0.343_0.45         -->
+    <!-- ============================================================ -->
+    <link name="table_top_2">
+      <visual>
+        <geometry>
+          <box size="1.092 0.686 0.89"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="table_wood">
+          <color rgba="0.5 0.4 0.3 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="1.092 0.686 0.89"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="table_top_2_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="table_top_2"/>
+      <origin xyz="-0.546 0 0.45" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Frame 2 world origin = table_2.pos + frame_2.pos = (-1.072, 0, 0.90) -->
+
+    <link name="post_2_l">
+      <visual>
+        <geometry>
+          <box size="0.04 0.04 1.00"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="frame_metal">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.04 0.04 1.00"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="post_2_l_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="post_2_l"/>
+      <!-- frame origin + geom pos (0, -0.323, 0.50) -->
+      <origin xyz="-1.072 -0.323 1.40" rpy="0 0 0"/>
+    </joint>
+
+    <link name="post_2_r">
+      <visual>
+        <geometry>
+          <box size="0.04 0.04 1.00"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="frame_metal">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.04 0.04 1.00"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="post_2_r_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="post_2_r"/>
+      <!-- frame origin + geom pos (0, 0.323, 0.50) -->
+      <origin xyz="-1.072 0.323 1.40" rpy="0 0 0"/>
+    </joint>
+
+    <link name="crossbar_2">
+      <visual>
+        <geometry>
+          <box size="0.04 0.686 0.04"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="frame_metal">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.04 0.686 0.04"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="crossbar_2_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="crossbar_2"/>
+      <!-- frame origin + geom pos (0, 0, 1.00) -->
+      <origin xyz="-1.072 0 1.90" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+
+</robot>

@@ -58,6 +58,20 @@ ament_target_dependencies(
   "rclcpp"
 )
 
+add_executable(orio_dual_cart_move_to_pose src/orio_dual_cart_move_to_pose.cpp)
+target_include_directories(orio_dual_cart_move_to_pose PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(orio_dual_cart_move_to_pose PUBLIC c_std_99 cxx_std_17)
+ament_target_dependencies(
+  orio_dual_cart_move_to_pose
+  "moveit_ros_planning_interface"
+  "moveit_msgs"
+  "shape_msgs"
+  "geometry_msgs"
+  "rclcpp"
+)
+
 add_executable(pick_and_place src/pick_and_place.cpp)
 target_include_directories(pick_and_place PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -72,7 +86,7 @@ ament_target_dependencies(
   "rclcpp"
 )
 
-install(TARGETS move_to_pose dual_move_to_pose cart_move_to_pose pick_and_place
+install(TARGETS move_to_pose dual_move_to_pose cart_move_to_pose orio_dual_cart_move_to_pose pick_and_place
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch config

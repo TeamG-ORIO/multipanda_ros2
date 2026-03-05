@@ -122,8 +122,8 @@
   <worldbody>
     <light name="top" pos="0 0 2" mode="trackcom"/>
 
-    <!-- Robot 1 - mj_left -->
-    <body name="mj_left_link0" childclass="panda" pos="0.686 0 0.9" quat="0 0 0 1" gravcomp="1">
+    <!-- Robot 1 - mj_left (left side in world: negative x) -->
+    <body name="mj_left_link0" childclass="panda" pos="-0.546 0.343 0.9" quat="-0.7071 0 0 0.7071" gravcomp="1">
       <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974"
           fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6"/>
       <geom mesh="link0_0" material="off_white" class="visual"/>
@@ -273,8 +273,8 @@
     </body>
     <!-- Robot 1 - mj_left END -->
 
-    <!-- Robot 2 - mj_right END -->
-    <body name="mj_right_link0" childclass="panda" pos="-0.546 0.343 0.9" quat="-0.7071 0 0 0.7071" gravcomp="1">
+    <!-- Robot 2 - mj_right (right side in world: positive x) -->
+    <body name="mj_right_link0" childclass="panda" pos="0.686 0 0.9" quat="0 0 0 1" gravcomp="1">
       <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974"
           fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6"/>
       <geom mesh="link0_0" material="off_white" class="visual"/>

@@ -1,0 +1,20 @@
+orio_dual_cart_move_to_pose:
+  ros__parameters:
+    # Left arm target pose (position in m, orientation in degrees)
+    left_x: -0.546
+    left_y: -0.1
+    left_z: 1.0
+    left_roll: 180.0
+    left_pitch: 0.0
+    left_yaw: 90.0
+    # Right arm target pose (position in m, orientation in degrees)
+    right_x: 0.4
+    right_y: 0.0
+    right_z: 1.0
+    right_roll: 180.0
+    right_pitch: 0.0
+    right_yaw: 0.0
+    # Cartesian planning
+    eef_step: 0.01
+    jump_threshold: 0.0
+    min_fraction: 0.9
